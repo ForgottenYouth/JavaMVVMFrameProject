@@ -1,5 +1,0 @@
-<resources>
-    <string name="app_name">Base</string>
-
-    <string name="exception_not_regist_listener_to_datamodel">not regist Listener,need to call function:registerListener</string>
-</resources>

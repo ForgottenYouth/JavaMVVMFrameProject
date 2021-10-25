@@ -1,0 +1,6 @@
+include ':testdemo'
+include ':network'
+include ':common'
+include ':base'
+include ':app'
+rootProject.name = "JavaMVVMFrameProject"

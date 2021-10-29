@@ -22,7 +22,7 @@ import com.leon.base.mvvm.model.BaseDataModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseRecycleViewAdapter<BINDING extends ViewDataBinding, T extends BaseDataModel>
+public abstract class BaseRecycleViewAdapter<T >
         extends RecyclerView.Adapter<BaseViewHolder> {
     protected Context mContext;
 
@@ -61,10 +61,10 @@ public abstract class BaseRecycleViewAdapter<BINDING extends ViewDataBinding, T 
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new BaseViewHolder(getCustomViewHoder());
+        return new BaseViewHolder(createCustomView());
     }
 
-    public abstract IBaseCustomView getCustomViewHoder();
+    public abstract IBaseCustomView createCustomView();
 
     public abstract BaseCustomViewModel getViewHolderViewModel(BaseCustomView holder, int position, T dataModel);
 

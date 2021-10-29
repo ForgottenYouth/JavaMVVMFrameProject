@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.leon.base.mvvm.model.BaseDataModel;
 
-public interface IRecycleChildViewClickListener<T extends BaseDataModel> {
+public interface IRecycleChildViewClickListener<T> {
 
     void onRecycleViewChildClick(int position, T item, View view);
 }

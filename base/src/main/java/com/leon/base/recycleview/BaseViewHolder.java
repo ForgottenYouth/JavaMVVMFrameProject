@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.leon.base.customview.BaseCustomViewModel;
 import com.leon.base.customview.IBaseCustomView;
 
-public class BaseViewHolder extends RecyclerView.ViewHolder {
+public class BaseViewHolder extends RecyclerView.ViewHolder  {
     protected IBaseCustomView itemView;
 
     public BaseViewHolder(@NonNull IBaseCustomView itemView) {

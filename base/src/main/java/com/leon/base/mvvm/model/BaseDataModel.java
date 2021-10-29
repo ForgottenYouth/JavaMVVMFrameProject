@@ -10,7 +10,11 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.leon.base.customexception.CustomException;
+import com.leon.base.utils.GenericUtils;
 import com.tencent.mmkv.MMKV;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -35,6 +39,10 @@ public abstract class BaseDataModel<ORG_DATA, RESULT_DATA> implements IBaseDataO
     private boolean mIsLoading;//标记是否在加载中
 
     private String mCachedMMKVKey;//保存在MMKV中的缓存数据的key
+
+    public boolean isNeedPage() {
+        return mIsNeedPage;
+    }
 
     /**
      * TODO 参数说明：
@@ -65,9 +73,10 @@ public abstract class BaseDataModel<ORG_DATA, RESULT_DATA> implements IBaseDataO
         mPageSize = defaultPageSize;
     }
 
-    public void refreash() throws CustomException {
+    public void refresh() throws CustomException {
         if (mReferenceBaseDataModelListener == null || mReferenceBaseDataModelListener.get() == null) {
-            throw new CustomException(this.getClass().toString() + "not regist Listener,need to call function:registerListener");
+            throw new CustomException(this.getClass().toString()
+                    + "not regist Listener,need to call function:registerListener");
         } else {
             if (!mIsLoading) {
                 if (mIsNeedPage) {
@@ -81,9 +90,14 @@ public abstract class BaseDataModel<ORG_DATA, RESULT_DATA> implements IBaseDataO
 
     protected abstract void loadData();
 
+    protected boolean isNeedToUpdate(long cachedTimeSlot) {
+        return true;
+    }
+
     public void loadNextPage() throws CustomException {
         if (mReferenceBaseDataModelListener == null || mReferenceBaseDataModelListener.get() == null) {
-            throw new CustomException(this.getClass().toString() + "not regist Listener,need to call function:registerListener");
+            throw new CustomException(this.getClass().toString()
+                    + "not regist Listener,need to call function:registerListener");
         } else {
             if (!mIsLoading) {
                 mIsLoading = true;
@@ -139,6 +153,32 @@ public abstract class BaseDataModel<ORG_DATA, RESULT_DATA> implements IBaseDataO
             }
         }
         mIsLoading = false;
+    }
+
+    public void getCachedAndLoad() {
+        if (!mIsLoading) {
+            mIsLoading = true;
+            if (!TextUtils.isEmpty(mCachedMMKVKey)) {
+                String cacheDataStr = MMKV.defaultMMKV().getString(mCachedMMKVKey, "");
+                if (!TextUtils.isEmpty(cacheDataStr)) {
+                    try {
+                        ORG_DATA cachedData = new Gson().fromJson(new JSONObject(cacheDataStr).getString("data"),
+                                (Class<ORG_DATA>) GenericUtils.getGenericType(this));
+                        if (cachedData != null) {
+                            onSuccess(cachedData, true);
+                        }
+                        long lastUpdateTime = Long.parseLong(new JSONObject(cacheDataStr).getString("lastUpdateTime"));
+                        if (isNeedToUpdate(lastUpdateTime)) {
+                            loadData();
+                            return;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            loadData();
+        }
     }
 
     /**

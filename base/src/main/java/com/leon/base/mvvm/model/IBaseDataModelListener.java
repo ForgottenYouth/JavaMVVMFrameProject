@@ -2,7 +2,7 @@
  * FileName: IBaseDataModelListener
  * Author: shiwenliang
  * Date: 2021/10/22 10:33
- * Description: 监听数据加载成功失败
+ * Description: 通知ViewModel 数据加载成功或失败
  */
 package com.leon.base.mvvm.model;
 

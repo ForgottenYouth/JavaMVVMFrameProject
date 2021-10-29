@@ -12,13 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.leon.base.mvvm.viewmodel.BaseViewModel;
+import com.leon.base.mvvm.viewmodel.ViewStatus;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
-public abstract class BaseActivity<BINDING extends ViewDataBinding, VIEWMODEL extends BaseViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<BINDING extends ViewDataBinding, VIEWMODEL extends BaseViewModel, DATA> extends AppCompatActivity implements Observer {
 
     protected BINDING mDataBinding;
     protected VIEWMODEL mViewModel;
@@ -26,18 +29,20 @@ public abstract class BaseActivity<BINDING extends ViewDataBinding, VIEWMODEL ex
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //获取最后一个泛型参数来创建viewmodel的实例
-        ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
-        Class<VIEWMODEL> cls = (Class<VIEWMODEL>) parameterizedType.getActualTypeArguments()[parameterizedType.getActualTypeArguments().length - 1];
-        mViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(cls);
+        mViewModel = createViewModel();
 
         //通过databinding 来加载布局
         mDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
+        this.getLifecycle().addObserver(mViewModel);
         bindViewModel();
 
         //加载视图
         initViews();
+
+        mViewModel.mViewStatus.observe(this, this);
     }
+
+    public abstract VIEWMODEL createViewModel();
 
     //将viewmodel绑定到xml上
     public abstract void bindViewModel();
@@ -47,4 +52,35 @@ public abstract class BaseActivity<BINDING extends ViewDataBinding, VIEWMODEL ex
 
     //初始化页面视图
     public abstract void initViews();
+
+    //viewModel通知页面
+    @Override
+    public void onChanged(Object o) {
+        if (o instanceof ViewStatus) {
+            switch ((ViewStatus) o) {
+                case LOADING:
+                    break;
+                case EMPTY:
+
+                    break;
+                case SHOWCONTENT:
+
+                    break;
+                case NOMOREDATA:
+
+                    break;
+                case REFRESH_ERROR:
+
+                    break;
+                case LOADMOREFAILED:
+                    break;
+                default:
+                    break;
+            }
+        } else if (o instanceof List) {
+            handleResponseData((List<DATA>) o);
+        }
+    }
+
+    public abstract void handleResponseData(List<DATA> data);
 }

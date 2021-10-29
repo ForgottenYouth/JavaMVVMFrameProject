@@ -6,9 +6,7 @@
  */
 package com.leon.base.customview;
 
-import com.leon.base.mvvm.model.BaseDataModel;
-
-public abstract class BaseCustomViewModel<DATAMODEL extends BaseDataModel> {
+public abstract class BaseCustomViewModel<DATAMODEL> {
 
     protected abstract BaseCustomViewModel covertDataModelToViewModel(DATAMODEL datamodel);
 

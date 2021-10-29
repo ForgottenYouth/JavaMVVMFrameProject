@@ -3,7 +3,7 @@
     package="com.leon.testdemo">
 
     <application>
-        <activity android:name=".TestMainActivity" />
+        <activity android:name=".mvvm.views.TestMainActivity" />
     </application>
 
 </manifest>

@@ -6,9 +6,7 @@
  */
 package com.leon.base.recycleview;
 
-import com.leon.base.mvvm.model.BaseDataModel;
-
-public interface IRecycleViewItemLongClickListener<T extends BaseDataModel> {
+public interface IRecycleViewItemLongClickListener<T> {
 
     void onRecycleViewItemLongClick(int postion, T item);
 }

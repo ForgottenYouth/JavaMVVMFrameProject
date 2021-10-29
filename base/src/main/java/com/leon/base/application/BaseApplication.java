@@ -13,6 +13,15 @@ import com.tencent.mmkv.MMKV;
 
 public class BaseApplication extends Application {
 
+    private static BaseApplication mInstance = null;
+
+    public static BaseApplication getInstance() {
+        if (mInstance == null) {
+            mInstance = new BaseApplication();
+        }
+        return mInstance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

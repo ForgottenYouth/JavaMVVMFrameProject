@@ -28,6 +28,7 @@ public abstract class BaseRecycleViewAdapter<T >
 
     public void setDataList(List<T> dataList) {
         this.mDataList = dataList;
+        notifyDataSetChanged();
     }
 
 

@@ -9,4 +9,5 @@ package com.leon.common.aroute;
 public class ARoutePath {
 
     public static final String TEST = "/test/main";
+
 }

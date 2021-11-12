@@ -9,4 +9,10 @@ package com.leon.javamvvmframeproject.application;
 import com.leon.base.application.BaseApplication;
 
 public class CustomApplication extends BaseApplication {
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 }

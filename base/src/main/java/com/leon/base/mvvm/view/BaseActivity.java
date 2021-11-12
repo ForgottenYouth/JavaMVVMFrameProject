@@ -61,7 +61,6 @@ public abstract class BaseActivity<BINDING extends ViewDataBinding, VIEWMODEL ex
                 case LOADING:
                     break;
                 case EMPTY:
-
                     break;
                 case SHOWCONTENT:
 
